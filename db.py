@@ -1,15 +1,1 @@
-
-
-
-class Importdb:
-        def imports(self, mydb):
-
-            self.mydb = {
-                'Nome': 'Wilson',
-                'Endereço': 'Rua afonso',
-                'Telefone': '219854117',
-                'Nota': '18547',
-                'Valor': '500',
-                # 'Saldo': saldo,
-            }
-            print(self.mydb)
+lista = {'1': {'Nome': 'Junior', 'Endereco': 'Rua', 'Telefone': '219854785', 'Nota': '100', 'Valor': '500'}}

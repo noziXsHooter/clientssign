@@ -1,7 +1,8 @@
 
 from cadastraclientes import CadastraCliente, Dado
 
-cliente1 = CadastraCliente()
+
+numero = input('Digite o numero da compra: ')
 
 nome = input('Digite o nome do cliente: ')
 
@@ -13,6 +14,7 @@ nota = input('Digite o numero da nota: ')
 
 valor = input('Digite o valor da compra: ')
 
+print()
 print('Por favor, confira os dados abaixo: ')
 
 print('Nome: ', nome)
@@ -20,13 +22,18 @@ print('Endereço: ', endereco)
 print('Telefone: ', telefone)
 print('Nota: ', nota)
 print('Valor: ', valor)
+print()
 
 
+cliente = CadastraCliente()
+dcompra = Dado(numero, nome, endereco, telefone, nota, valor)
+cliente.insere_dado(dcompra)
 
-dcompra = Dado(nome, endereco, telefone, nota, valor)
-cliente1.insere_dado(dcompra)
+cliente.transforma_dict()
 
-cliente1.transforma_dict()
+cliente.salva_na_db()
+
+print('Compra cadastrada com sucesso!')
 
 #cliente1.lista_dados()
 
