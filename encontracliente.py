@@ -15,10 +15,12 @@ class EncontraCliente():
         with open('jsondb.json', 'r') as jsondbread:
             datajsondb = json.load(jsondbread)
             print(type(datajsondb))
-        for v in datajsondb.values():
+            print(datajsondb.get(('1'), ('Nome')))
+
+        '''for v in datajsondb.values():
             v = v['Nome']
             if v == self.stringobjeto:
-                print('O objeto da busca {} foi encontrado!'.format(v))
+                print('O objeto da busca {} foi encontrado!'.format(v))'''
 
 
 class Object:
