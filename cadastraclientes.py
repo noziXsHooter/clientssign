@@ -1,43 +1,46 @@
-import json
+import sqlite3
 
 
-class CadastraCliente:
-    global dictmain
+class CadastroClientesDB:
+    def __init__(self, arquivo):
+        self.conn = sqlite3.connect(arquivo)
+        self.cursor = self.conn.cursor()
 
-    def __init__(self):
-        self.dados = []
+    def inserir(self, nome, endereco, telefone, saldo=0, pontos=0):
+        consulta = 'INSERT OR IGNORE INTO clientes (nome, endereco, telefone, saldo, pontos) VALUES (?, ?, ?, ?, ?)'
+        self.cursor.execute(consulta, (nome, endereco, telefone, saldo, pontos))
+        self.conn.commit()
 
-    def insere_dado(self, dado):
-        self.dados.append(dado)
+    def listar(self):
+        self.cursor.execute('SELECT * FROM clientes')
 
-    def transforma_dict(self):
-        formulario = ['Nome', 'Endereco', 'Telefone', 'Nota', 'Valor']
-        fromdados = []
+        for linha in self.cursor.fetchall():
+            print(linha)
 
-        for dado in self.dados:
-            fromdados = [dado.nome, dado.endereco, dado.telefone, dado.nota, dado.valor]
-        dictdados = dict(zip(formulario, fromdados))
-        self.dictmain = dictdados
+    def buscar(self, buscavalor):
+        consulta = 'SELECT * FROM clientes WHERE nome LIKE ?'
+        self.cursor.execute(consulta, (f'%{buscavalor}%',))
 
-    def salva_na_db(self):
-        with open('jsondb.json', 'r') as jsondbread:
-            datajsondb = json.load(jsondbread)
-            datalist = list(datajsondb)
-            for i in range(0, len(datalist)):
-                datalist[i] = (int(datalist[i]))
-            ultima_compra = str(datalist[-1] + 1)
-            datajsondb[ultima_compra] = self.dictmain
-        print(self.dictmain)
-        print(datajsondb)
-        print(ultima_compra)
+        for linha in self.cursor.fetchall():
+            print(linha)
 
-        with open('jsondb.json', 'w') as jsondbwrite:
-            json.dump(datajsondb, jsondbwrite, indent=4)
+    def fechar(self):
+        self.cursor.close()
+        self.conn.close()
 
-class Dado:
-    def __init__(self, nome, endereco, telefone, nota, valor):
-        self.nome = nome
-        self.endereco = endereco
-        self.telefone = telefone
-        self.nota = nota
-        self.valor = valor
+class EditaClientes:
+    def editar(self, nome, endereco, telefone, saldo, pontos, id):
+        consulta = 'UPDATE OR IGNORE clientes SET nome=?, endereco =?,telefone=?, saldo=?, pontos=? WHERE id=?'
+        self.cursor.execute(consulta, (nome, endereco, telefone, saldo, pontos, id))
+        self.conn.commit()
+
+    def excluir(self, id):
+        consulta = 'DELETE FROM clientes WHERE id=?'
+        self.cursor.execute(consulta, (id,))
+        self.conn.commit()
+
+
+if __name__ == '__main__':
+    cadastro = CadastroClientesDB('clientes.db')
+    edita = EditaClientes('clientes.db')
+
